@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Toko Roti Input Form</title>
+
+    
+    <link rel="stylesheet" href="node_modules/bootstrap-icons/font/bootstrap-icons.css">
+    <!-- bootstrap  -->
+    <link rel="stylesheet" href="./bootstrap-5.2.0-dist/css/bootstrap.min.css">
+    <script src="./bootstrap-5.2.0-dist/js/bootstrap.min.js"></script>
+    <!-- sweet alert -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+</head>
+
+<body>
+    <nav class="navbar bg-light mb-5">
+        <div class="container-fluid">
+            <h2 class="header">Toko Roti Mbak Jumiati</h2>
+            
+        </div>
+      </nav>
+    <div class="container">
+        <form class="myForm" name="myForm" action="" method="POST" accept-charset="utf-8" onsubmit="submitForm(event)">
+            <div class="mb-3 row">
+                <label class="col-4 col-form-label" for="NamaPelanggan">Nama Pelanggan</label>
+                <div class="col-8">
+                    <input placeholder="Masukan Nama Pelanggan ..." class="form-control" type="text" name="NamaPelanggan" id="NamaPelanggan" value="" />
+                </div>
+            </div>
+            <div class="mb-3 row g-3">
+                <div class="col-auto">
+                    <label class="visually-hidden" for="Tanggal">Tanggal</label>
+                    <input class="col-3 form-control" type="date" name="Tanggal" id="Tanggal"/>
+                </div>
+                <div class="col-auto">
+                    <label class="visually-hidden" for="Jam">Jam</label>
+                    <input class="col-4 form-control" type="time" name="Jam" id="jam"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    item yang dijual :
+                </div>
+
+                <table class="table mt-3">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="">Item</th>
+                            <th class="">Qty</th>
+                            <th class="">Harga Satuan</th>
+                            <th class="">Sub Total</th>
+                            <th class=""></th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-light" id="TableBaru">
+
+                    </tbody>
+                </table>
+                
+            </div>
+            <a onclick="myFunction()" class="btn btn-primary" href="#" role="button">+ Tambah Item Lain</a>
+            <div class="row">
+                <div class="col-6">
+
+                </div>
+                <div class="col-3">
+                    Total
+                </div>
+                <div class="col-3">
+                    <input class="form-control" placeholder="Disabled" type="number" name="total" id="total" value="" readonly />
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-6">
+
+                </div>
+                <div class="col-3">
+                    Bayar Tunai
+                </div>
+                <div class="col-3">
+                    <input class="form-control" type="number" name="bayarTunai" id="bayarTunai" value="" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+
+                </div>
+                <div class="col-3">
+                    kembalian
+                </div>
+                <div class="col-3">
+                    <input class="form-control" type="number" placeholder="Disabled" name="kembali" id="kembali" value="" readonly />
+                </div>
+
+            </div>
+            <div class="float-end mt-5">
+                    <a class="btn btn-primary" id="cancel" role="button" onclick="reload()">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+
+            </div>
+        </form>
+    </div>
+
+    </script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+        // fungsi reload
+        function reload() {
+        location.reload();
+        }
+        // fungsi mendapatkan value hari ini
+        const d = new Date();
+        const dd = d.getDate();
+        const mm = d.getMonth() + 1;
+        const yy = d.getFullYear();
+        const jam = d.getHours();
+        const menit = d.getMinutes();
+        function setInputDate(_id) {
+            if(dd < 10){
+                day = "0"+dd;
+            };
+            if(mm < 10){
+                month = "0"+mm;
+            };
+            document.getElementById(_id).value = yy+"-"+month+"-"+day;
+        };
+        setInputDate("Tanggal");
+        function setInputJam(_id) {
+            if(jam < 10){
+                jam = "0"+jam;
+            };
+            if(menit < 10){
+                menit = "0"+menit;
+            };
+            document.getElementById(_id).value = jam+':'+menit;
+        };
+        setInputJam("jam");
+        
+        /* fungsi menambah baris */
+        function myFunction() {
+
+            var table = document.getElementById("TableBaru");
+            var row = table.insertRow(0);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+            var cell4 = row.insertCell(3);
+            var cell5 = row.insertCell(4);
+
+            cell1.innerHTML = '<td><select class="form-select form-control" aria-label="Pilih" name="item"><option selected>Pilih</option><option value="roti tawar">Roti Tawar</option><option value="Roti Kering">Roti Kering</option><option value="Roti Coklat">Roti Coklat</option></select></td>';
+            cell2.innerHTML = "<td><input type='number'value=''class='qty form-control' onchange='subTotal(this)' name='qty'></td>";
+            cell3.innerHTML =
+                "<td><input type='number'value='' class='hargaSatuan form-control' onchange='subTotal(this)' id='nilai'name='hargaSatuan'></td>";
+            cell4.innerHTML = "<td><input type='number'value='' placeholder='Disabled' readonly class ='subTotal form-control' name='subtotal'></td>";
+            cell5.innerHTML =
+                "<td><button class='btn btn-danger' onclick='deleteRow(this)' ><i class='bi bi-trash-fill'></i></button></td>";
+        };
+
+        /* fungsi menghapus baris */
+
+        function deleteRow(btn) {
+            var row = btn.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+        };
+        /* fungsi mengalikan Qty dgn Harga */
+
+        function subTotal(el) {
+            var parent = $(el).closest('tr');
+            var qty = parent.find('.qty').val() == "" ? 1 : parent.find('.qty').val();
+            var hargaSatuan = parent.find('.hargaSatuan').val() == "" ? 1 : parent.find('.hargaSatuan').val();
+            var subTotal = hargaSatuan * qty;
+            parent.find('.subTotal').val(subTotal);
+        };
+
+        /* fungsi menentukan jumlah kembalian */
+        $(document).ready(function () {
+            $("#total, #bayarTunai").keyup(function () {
+                var total = $("#total").val();
+                var bayarTunai = $("#bayarTunai").val();
+                $("#kembali").val(parseInt(bayarTunai) - parseInt(total));
+            });
+        });
+
+        /* fungsi menjumlahkan subTotal */
+
+        $("body").on('change', '#nilai', function () {
+            var sum = 0;
+            $('.subTotal').each(function () {
+                sum += parseFloat(this.value);
+            });
+            $('#total').val(sum);
+        });
+
+        /* fungsi alert data form JSON */
+
+        function submitForm(event) {
+            event.preventDefault();
+            const url = "https://example.com/...";
+            const formData = new FormData(event.target);
+            const formJSON = Object.fromEntries(formData.entries());
+            const item = formData.getAll('item');
+            const qty = formData.getAll('qty');
+            const hargaSatuan = formData.getAll('hargaSatuan');
+            const subtotal = formData.getAll('subtotal');
+            const data = {};
+
+            formData.forEach((value, key) => {
+                if (key == "qty" || key == "hargaSatuan" || key == "subtotal" || key == "item") {
+                    return;
+                } else {
+                    data[key] = value
+                }
+            });
+
+            data["detailPenjualan"] = [];
+
+            for (let i = 0; i < qty.length; i++) {
+                data.detailPenjualan.push({
+                    "item": item[i],
+                    "qty": qty[i],
+                    "hargaSatuan": hargaSatuan[i],
+                    "subtotal": subtotal[i]
+                });
+            }
+            // window.alert(JSON.stringify(data));
+            swal("JSON dari form", JSON.stringify(data));
+        };
+    </script>
+
+</body>
+
+</html>
