@@ -7,8 +7,8 @@
     <title>Toko Roti Input Form</title>
 
     
-    <link rel="stylesheet" href="node_modules/bootstrap-icons/font/bootstrap-icons.css">
-    <!-- bootstrap  -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+        <!-- bootstrap  -->
     <link rel="stylesheet" href="./bootstrap-5.2.0-dist/css/bootstrap.min.css">
     <script src="./bootstrap-5.2.0-dist/js/bootstrap.min.js"></script>
     <!-- sweet alert -->
@@ -115,29 +115,41 @@
         }
         // fungsi mendapatkan value hari ini
         const d = new Date();
-        const dd = d.getDate();
-        const mm = d.getMonth() + 1;
-        const yy = d.getFullYear();
-        const jam = d.getHours();
-        const menit = d.getMinutes();
         function setInputDate(_id) {
+            const dd = d.getDate();
+            const mm = d.getMonth() + 1;
+            const yy = d.getFullYear();
             if(dd < 10){
                 day = "0"+dd;
+            }else{
+                day = dd;
             };
             if(mm < 10){
                 month = "0"+mm;
+            }else{
+                month = mm;
             };
             document.getElementById(_id).value = yy+"-"+month+"-"+day;
+            console.log(yy+"-"+month+"-"+day);
         };
         setInputDate("Tanggal");
+        // fungsi mendapatkan value jam hari ini
         function setInputJam(_id) {
+            const jam = d.getHours();
+            const menit = d.getMinutes();
             if(jam < 10){
-                jam = "0"+jam;
+                h = "0"+jam;
+                console.log(h+'kurang dari 10 nilai'+jam);
+            }else{
+                h =jam;
             };
             if(menit < 10){
-                menit = "0"+menit;
+                m = "0"+menit;
+            }else{
+                m = menit;
             };
-            document.getElementById(_id).value = jam+':'+menit;
+            document.getElementById(_id).value = h+':'+m;
+            console.log(h+':'+m);
         };
         setInputJam("jam");
         
@@ -158,7 +170,7 @@
                 "<td><input type='number'value='' class='hargaSatuan form-control' onchange='subTotal(this)' id='nilai'name='hargaSatuan'></td>";
             cell4.innerHTML = "<td><input type='number'value='' placeholder='Disabled' readonly class ='subTotal form-control' name='subtotal'></td>";
             cell5.innerHTML =
-                "<td><button class='btn btn-danger' onclick='deleteRow(this)' >Hapus</button></td>";
+                "<td><button class='btn btn-danger' onclick='deleteRow(this)' ><i class='bi bi-trash-fill'></i></button></td>";
         };
 
         /* fungsi menghapus baris */
